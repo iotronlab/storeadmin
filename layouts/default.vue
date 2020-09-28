@@ -16,6 +16,15 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       {{categories}}
       <v-toolbar-title v-text="title" />
+      <v-container fluid px-0>
+        <v-row no-gutters>
+          <v-col class="d-flex justify-end align-center">
+            <span class="hidden-sm-and-down mx-2">
+              <Login />
+            </span>
+          </v-col>
+        </v-row>
+      </v-container>
       <v-spacer />
     </v-app-bar>
     <v-main>
@@ -32,7 +41,10 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations, mapState } from 'vuex'
+import Login from '@/components/auth/Login'
 export default {
+  components: { Login },
+
   data() {
     return {
       drawer: false,

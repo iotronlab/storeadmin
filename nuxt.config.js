@@ -50,6 +50,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
+    '@nuxtjs/proxy',
   ],
   /*
    ** Nuxt.js modules
@@ -67,7 +68,17 @@ export default {
    */
   axios: {
     baseURL: 'http://localhost:8000/api',
+    proxy: true,
   },
+
+  /*
+   ** Changing base url to target url using procy
+  */
+ 
+  proxy: {
+    '/pincode': { target: 'https://www.google.co.in/', pathRewrite: {'^/pincode': ''} }
+  },
+
   /*
    ** Content module configuration
    ** See https://content.nuxtjs.org/configuration

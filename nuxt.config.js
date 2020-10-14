@@ -76,7 +76,7 @@ export default {
   */
  
   proxy: {
-    '/pincode': { target: 'https://www.google.co.in/', pathRewrite: {'^/pincode': ''} }
+    '/test': { target: 'https://www.google.co.in/', pathRewrite: {'^/test': ''} }
   },
 
   /*

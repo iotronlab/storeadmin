@@ -68,16 +68,16 @@ export default {
    */
   axios: {
     baseURL: 'http://localhost:8000/api',
-    proxy: true,
+    // proxy: true,
   },
 
   /*
    ** Changing base url to target url using procy
   */
  
-  proxy: {
-    '/test': { target: 'https://www.google.co.in/', pathRewrite: {'^/test': ''} }
-  },
+  // proxy: {
+  //   '/test': { target: 'https://www.google.co.in/', pathRewrite: {'^/test': ''} }
+  // },
 
   /*
    ** Content module configuration

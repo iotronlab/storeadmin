@@ -5,6 +5,7 @@
         ref="form"
         v-model="valid"
         lazy-validation
+        @submit="add" method="post"
       >
         <v-select
           v-model="selectedType"
@@ -47,7 +48,7 @@
       </v-form>
     </v-row>
     <div v-if="show && selectedType == 'configurable'">
-      <PAC :attributes="familyData"/>
+      <PAC :attributes="[familyData, this.slug, this.selectedFamily.id]"/>
     </div>
   </v-container>
 </template>
@@ -72,13 +73,23 @@ import PAC from '@/components/Product/ProductAttributeComponent.vue'
       }
     },
     methods: {
-      add () {
-        // this.$router.push(`edit/${this.slug}`);
+      async add () {
         if(this.selectedType == "configurable"){
           this.show = true
           this.getFamilyData()
-        } else {
-          this.show = false
+        } else if(this.selectedType == 'simple') {
+            await this.$axios.$post('products', {
+                type: 'simple',
+                attribute_family_id: this.selectedFamily.id,
+                sku: this.slug
+            })
+            .then((res) => {
+              console.log(res)
+              this.$router.push(`edit/${this.slug}`);
+            })
+            .catch((err) => {
+              console.log(err)
+            })
         }
       },
       reset () {
@@ -89,17 +100,25 @@ import PAC from '@/components/Product/ProductAttributeComponent.vue'
         await this.$axios.$get(`http://localhost:8000/api/products/create?family=${this.selectedFamily.id}`)
         .then((res) => {
           this.familyData = res.data
-          console.log(this.familyData)
+          // console.log(this.familyData)
         })
         .catch((err) => {
           console.log(err)
         })
       }
     },
+    mounted() {
+      // console.log("axios below")
+      // console.log(this.$app)
+    },
     async asyncData({params, app}){
       let families
-      await app.$axios.$get(`http://localhost:8000/api/families`)
+      console.log("app below")
+      console.log(app)
+      await app.$axios.$get(`families`)
       .then((res) => {
+        console.log("hello world")
+        console.log(res)
         families = res.data
       })
       .catch ((err) => {

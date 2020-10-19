@@ -14,7 +14,6 @@
     </v-navigation-drawer>
     <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      {{categories}}
       <v-toolbar-title v-text="title" />
       <v-container fluid px-0>
         <v-row no-gutters>

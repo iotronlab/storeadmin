@@ -48,7 +48,7 @@
       </v-form>
     </v-row>
     <div v-if="show && selectedType == 'configurable'">
-      <PAC :attributes="[familyData, this.slug, this.selectedFamily.id]"/>
+      <PAC :attributes="{data: familyData, sku: this.slug, family: this.selectedFamily.id}"/>
     </div>
   </v-container>
 </template>
@@ -60,6 +60,7 @@ import PAC from '@/components/Product/ProductAttributeComponent.vue'
     },
     data(){
       return {
+        valid: true,
         selectedType: null,
         show: false,
         types: [
@@ -84,13 +85,15 @@ import PAC from '@/components/Product/ProductAttributeComponent.vue'
                 sku: this.slug
             })
             .then((res) => {
-              console.log(res)
-              this.$router.push(`edit/${this.slug}`);
+              this.$router.push({path: `edit/${this.slug}`, query: {data: res.data}});
             })
             .catch((err) => {
               console.log(err)
             })
         }
+      },
+      validate () {
+        this.$refs.form.validate()
       },
       reset () {
         this.show = false
@@ -113,12 +116,8 @@ import PAC from '@/components/Product/ProductAttributeComponent.vue'
     },
     async asyncData({params, app}){
       let families
-      console.log("app below")
-      console.log(app)
       await app.$axios.$get(`families`)
       .then((res) => {
-        console.log("hello world")
-        console.log(res)
         families = res.data
       })
       .catch ((err) => {

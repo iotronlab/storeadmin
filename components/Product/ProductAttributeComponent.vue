@@ -3,7 +3,7 @@
     <v-container fluid>
         <v-row
             align="center"
-            v-for="attribute in attributes[0]"
+            v-for="attribute in attributes.data"
             :key="attribute.id"
         >
             <v-col
@@ -19,7 +19,6 @@
                 chips
                 :label="attribute.code"
                 multiple
-                return-object
             ></v-select>
             </v-col>
         </v-row>
@@ -36,7 +35,7 @@
     props:{
       attributes: {
         required: true,
-        type: Array,
+        type: Object,
       },
     },
     data: () => ({
@@ -45,18 +44,15 @@
     }),
     methods: {
       async save(){
-        this.data['type'] = 'configurable'
-        this.data['sku'] = this.attributes[1]
-        this.data['attribute_family_id'] = this.attributes[2]
-        for (const [key, vals] of Object.entries(this.values)){
-          for (let i = 0; i < vals.length; i++){
-            this.data[`super_attributes[${key}][${i}]`] = vals[i].id
-          }
-        };
+        this.data.type = 'configurable'
+        this.data.sku = this.attributes.sku
+        this.data.attribute_family_id = this.attributes.family
+        this.data.super_attributes = this.values
+
         console.log(this.data)
-        await this.$axios.$post(`products?type=configurable&sku=${this.attributes[1]}&family=${this.attributes[2]}`, this.data)
+        await this.$axios.$post(`products?type=configurable&sku=${this.attributes.sku}&family=${this.attributes.family}`, this.data)
         .then((res) => {
-          console.log(res)
+          this.$router.push({path: `edit/${this.slug}`, query: {data: res.data}})
         })
         .catch((err) => {
           console.log(err)

@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <v-navigation-drawer v-model="drawer" temporary fixed app>
-      <v-list>
+      <v-list nav dense shaped>
         <v-list-item v-for="item in items" :key="item.title" :to="item.to">
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -14,13 +14,13 @@
     </v-navigation-drawer>
     <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <nuxt-link :to="{ name: 'index' }">
+        <v-img src="/logo.png" alt="artistic logo" width="80" />
+      </nuxt-link>
       <v-container fluid px-0>
         <v-row no-gutters>
           <v-col class="d-flex justify-end align-center">
-            <span class="hidden-sm-and-down mx-2">
-              <Login />
-            </span>
+            <v-btn rounded to="/auth/login">Sign in</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -40,10 +40,8 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations, mapState } from 'vuex'
-import Login from '@/components/auth/Login'
-export default {
-  components: { Login },
 
+export default {
   data() {
     return {
       drawer: false,
@@ -51,18 +49,28 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Dashboard',
           to: '/',
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
+          title: 'Catalog',
+          to: '/admin/products',
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Category',
-          to: '/categories',
+          title: 'Addresses',
+          to: '/admin/addresses',
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Orders',
+          to: '/orders',
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Custom Art',
+          to: '/orders/custom',
         },
       ],
 

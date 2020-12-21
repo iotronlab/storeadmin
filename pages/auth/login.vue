@@ -1,19 +1,158 @@
 <template>
-  <v-card class="mx-auto" max-width="344">
-    <v-card-text>
-      <div>Word of the Day</div>
-      <p class="display-1 text--primary">be•nev•o•lent</p>
-      <p>adjective</p>
-      <div class="text--primary">
-        well meaning and kindly.
-        <br />"a benevolent smile"
-      </div>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn text color="deep-purple accent-4">Learn More</v-btn>
-    </v-card-actions>
-  </v-card>
+  <v-container fluid>
+    <v-row no-gutters justify="center">
+      <v-col lg="5">
+        <v-card>
+          <v-container fluid>
+            <v-row no-gutters>
+              <v-col class="d-flex justify-center align-center">
+                <v-form @submit.prevent="login" id="login-form" method="post">
+                  <v-img
+                    src="/butiq.png"
+                    contain
+                    alt="artistic logo"
+                    height="120"
+                    width="120"
+                    max-width="120"
+                    class="mx-auto"
+                  />
+
+                  <v-text-field
+                    prepend-icon="mdi-email"
+                    label="Email ID"
+                    name="email"
+                    type="email"
+                    v-model="email"
+                    autocomplete="off"
+                  ></v-text-field>
+                  <v-text-field
+                    id="password"
+                    prepend-icon="mdi-lock"
+                    v-model="password"
+                    :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="showPass ? 'text' : 'password'"
+                    label="Password"
+                    name="password"
+                    hint="At least 8 characters"
+                    autocomplete="off"
+                    @click:append="showPass = !showPass"
+                  ></v-text-field>
+
+                  <div class="d-flex justify-center">
+                    <v-btn
+                      color="primary"
+                      rounded
+                      outlined
+                      type="submit"
+                      class="mt-4"
+                      >LogIn</v-btn
+                    >
+                  </div>
+
+                  <br />
+                  <hr />
+                  <br />
+                  <p class="text-center grey--text subtitle-2">LOG IN VIA</p>
+
+                  <v-row no-gutters justify="space-around">
+                    <v-btn
+                      color="blue"
+                      class="white--text ma-1"
+                      @click.prevent="socialLogin('facebook')"
+                    >
+                      facebook
+                      <v-icon right>mdi-facebook</v-icon>
+                    </v-btn>
+
+                    <v-btn
+                      color="red"
+                      class="white--text ma-1"
+                      @click.prevent="socialLogin('google')"
+                    >
+                      google
+                      <v-icon right>mdi-google</v-icon>
+                    </v-btn>
+                  </v-row>
+                </v-form>
+              </v-col>
+            </v-row>
+
+            <br />
+            <hr />
+            <br />
+            <v-row no-gutters class="my-2" justify="space-around">
+              <v-btn
+                text
+                x-small
+                :to="{ path: '/verify/register' }"
+                @click="dialog = false"
+                >Create an account</v-btn
+              >
+
+              <v-btn
+                text
+                x-small
+                :to="{ path: '/verify/reset' }"
+                @click="dialog = false"
+                >Forgot password</v-btn
+              >
+            </v-row>
+          </v-container>
+        </v-card></v-col
+      ></v-row
+    >
+  </v-container>
 </template>
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      showPass: false,
+      rules: {
+        required: (v) => !!v || 'Required.',
+        min: (v) => v.length >= 8 || 'Min 8 characters',
+        emailValid: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+      },
+
+      message: '',
+    }
+  },
+  methods: {
+    async login() {
+      await this.$auth
+        .loginWith('local', {
+          data: {
+            email: this.email,
+            password: this.password,
+          },
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$toast.error(err.message)
+        })
+      this.checkLogin()
+    },
+    async loginWithFacebook() {
+      window.location.href = `https://api.butiq.co.in/public/api/login/facebook`
+      this.checkLogin()
+    },
+    async loginWithGoogle() {
+      window.location.href = `https://api.butiq.co.in/public/api/login/google`
+      this.checkLogin()
+    },
+    checkLogin() {
+      console.log(this.$auth.user)
+      if (this.$auth.loggedIn) {
+        this.dialog = false
+      } else {
+        this.message = 'Invalid email or password'
+      }
+    },
+  },
+}
 </script>

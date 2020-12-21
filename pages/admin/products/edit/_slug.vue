@@ -1,18 +1,10 @@
 <template>
-  <v-container >
-    <v-expansion-panels
-    v-model="panel"
-    >
-      <v-expansion-panel 
-        v-for="group in data.groups"
-        :key="group[id]"
-      >
-        <v-expansion-panel-header>{{group.name}}</v-expansion-panel-header>
+  <v-container>
+    <v-expansion-panels v-model="panel">
+      <v-expansion-panel v-for="group in data.groups" :key="group[id]">
+        <v-expansion-panel-header>{{ group.name }}</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-row
-            v-for="attribute in group.attributes"
-            :key="attribute.id"
-          >
+          <v-row v-for="attribute in group.attributes" :key="attribute.id">
             <div v-if="attribute.type == 'text' || attribute.type == 'price'">
               <v-text-field
                 v-model="values[attribute.code]"
@@ -64,18 +56,10 @@
                   scrollable
                 >
                   <v-spacer></v-spacer>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="menu = false"
-                  >
+                  <v-btn text color="primary" @click="menu = false">
                     Cancel
                   </v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.menu.save(date)"
-                  >
+                  <v-btn text color="primary" @click="$refs.menu.save(date)">
                     OK
                   </v-btn>
                 </v-date-picker>
@@ -96,10 +80,7 @@
       <v-expansion-panel>
         <v-expansion-panel-header>Inventories</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-text-field
-            label="Default"
-            hide-details="auto"
-          ></v-text-field>
+          <v-text-field label="Default" hide-details="auto"></v-text-field>
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -112,13 +93,10 @@
         <v-expansion-panel-header>Categories</v-expansion-panel-header>
         <v-expansion-panel-content></v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel v-if="response.type == 'configurable'">
+      <!-- <v-expansion-panel v-if="response.type == 'configurable'">
         <v-expansion-panel-header>variant</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-row
-            v-for="variant in response.variants"
-            :key="variant.product_id"
-          >
+          <v-row v-for="variant in response.variants" :key="variant.product_id">
             <v-col>
               <v-text-field
                 v-model="variant.sku"
@@ -127,10 +105,7 @@
               ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                label="Name"
-                hide-details="auto"
-              ></v-text-field>
+              <v-text-field label="Name" hide-details="auto"></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
@@ -147,11 +122,7 @@
               ></v-text-field>
             </v-col>
             <v-col>
-              <v-select
-                label="Qty"
-                dense
-                outlined
-              ></v-select>
+              <v-select label="Qty" dense outlined></v-select>
             </v-col>
             <v-col>
               <v-text-field
@@ -161,10 +132,7 @@
               ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                label="SKU"
-                hide-details="auto"
-              ></v-text-field>
+              <v-text-field label="SKU" hide-details="auto"></v-text-field>
             </v-col>
             <v-col>
               <v-select
@@ -176,48 +144,56 @@
             </v-col>
           </v-row>
         </v-expansion-panel-content>
-      </v-expansion-panel>
+      </v-expansion-panel> -->
     </v-expansion-panels>
   </v-container>
 </template>
 <script>
-  export default {
-    data(){
-      return {
-        values: {},
-        state: null,
-        text: null,
-        panel: [0, 1],
-        panel: [],
-        valid: true,
-        select_type: null,
-        data: [],
-        response: {},
-        select_attribute: null,
-        attributes: [],
-        slug: '',
-        date: new Date().toISOString().substr(0, 10),
-        menu: false,
-        modal: false,
-        menu2: false,
-      }
-    },
-    methods: {
-      allowedDates: val => parseInt(val.split('-')[2], 10) % 2 === 0,
-    },
-    async asyncData({params, app, query}){
-      let data = null;
-      await app.$axios.$get('groups?family=1')
+export default {
+  data() {
+    return {
+      values: {},
+      state: null,
+      text: null,
+      panel: [0, 1],
+      panel: [],
+      valid: true,
+      select_type: null,
+      data: [],
+      product: {},
+      select_attribute: null,
+      attributes: [],
+      slug: '',
+      date: new Date().toISOString().substr(0, 10),
+      menu: false,
+      modal: false,
+      menu2: false,
+    }
+  },
+  methods: {
+    allowedDates: (val) => parseInt(val.split('-')[2], 10) % 2 === 0,
+  },
+  async fetch() {
+    let data = null
+    await this.$axios
+      .$get('families/1')
       .then((res) => {
-        data = res.data;
+        this.data = res.data
       })
       .catch((err) => {
         console.log(err)
       })
-      return {
-        data: data,
-        response: query.data
-      }
-    }
-  }
+    await this.$axios
+      .$get(`products/${this.$route.params.slug}`)
+      .then((res) => {
+        this.product = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    // return {
+    //   // response: query.data,
+    // }
+  },
+}
 </script>

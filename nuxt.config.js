@@ -27,7 +27,7 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }],
   },
   /*
    ** Global CSS
@@ -50,7 +50,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    '@nuxtjs/proxy',
+    // '@nuxtjs/proxy',
   ],
   /*
    ** Nuxt.js modules
@@ -58,6 +58,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt/content
     '@nuxt/content',
@@ -70,11 +71,59 @@ export default {
     baseURL: 'http://localhost:8000/api',
     // proxy: true,
   },
+  // auth module config
+  auth: {
+    redirect: {
+      home: '/',
+      logout: '/',
+      login: '/',
+      callback: '/',
+    },
+
+    refresh_token: {
+      prefix: '_refresh_token.',
+    },
+    token: {
+      prefix: '_token.',
+    },
+
+    strategies: {
+      local: {
+        token: {
+          property: 'accessToken',
+          required: true,
+          type: 'Bearer',
+        },
+        user: {
+          property: 'data',
+          autoFetch: true,
+        },
+        endpoints: {
+          login: {
+            url: '/vendor/login',
+            method: 'post',
+          },
+          user: {
+            url: '/vendor/details',
+            method: 'get',
+          },
+          logout: {
+            url: '/vendor/logout',
+            method: 'get',
+          },
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer',
+        watchLoggedIn: true,
+        localStorage: true,
+      },
+    },
+  },
 
   /*
-   ** Changing base url to target url using procy
-  */
- 
+   ** Changing base url to target url using proxy
+   */
+
   // proxy: {
   //   '/test': { target: 'https://www.google.co.in/', pathRewrite: {'^/test': ''} }
   // },

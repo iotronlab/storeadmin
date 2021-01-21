@@ -32,12 +32,16 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/assets/main.css'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: [
+    {
+      src: '~/plugins/vee-validate.js',
+    },
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -62,6 +66,7 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt/content
     '@nuxt/content',
+    '@nuxtjs/toast',
   ],
   /*
    ** Axios module configuration
@@ -71,6 +76,7 @@ export default {
     baseURL: 'http://localhost:8000/api',
     // proxy: true,
   },
+
   // auth module config
   auth: {
     redirect: {
@@ -112,14 +118,40 @@ export default {
             method: 'get',
           },
         },
-        tokenRequired: true,
-        tokenType: 'Bearer',
+
         watchLoggedIn: true,
-        localStorage: true,
+        localStorage: {
+          prefix: 'auth.',
+        },
       },
     },
   },
-
+  //toast notifications
+  toast: {
+    position: 'top-center',
+    duration: 4000,
+    theme: 'bubble',
+    action: {
+      text: 'Close',
+      onClick: (e, toastObject) => {
+        toastObject.goAway(0)
+      },
+    },
+    register: [
+      // Register custom toasts
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error',
+        },
+      },
+    ],
+  },
+  //global auth middleware
+  router: {
+    //middleware: ['auth'],
+  },
   /*
    ** Changing base url to target url using proxy
    */
@@ -143,13 +175,13 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+          primary: '#7851a9',
+          accent: '#daa520',
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
+          success: colors.green.accent4,
         },
       },
     },

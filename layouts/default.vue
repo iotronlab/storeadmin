@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer v-model="drawer" temporary fixed app>
       <v-list nav dense shaped>
         <v-list-item v-for="item in items" :key="item.title" :to="item.to">
@@ -9,6 +9,13 @@
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-switch
+            v-model="$vuetify.theme.dark"
+            color="primary"
+            label="Dark"
+          ></v-switch>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -20,14 +27,19 @@
       <v-container fluid px-0>
         <v-row no-gutters>
           <v-col class="d-flex justify-end align-center">
-            <v-btn rounded to="/auth/login">Sign in</v-btn>
+            <v-btn rounded v-if="!$auth.loggedIn" to="/auth/login"
+              >Sign in</v-btn
+            >
+            <v-btn rounded v-if="$auth.loggedIn" to="/admin/profile"
+              >profile</v-btn
+            >
           </v-col>
         </v-row>
       </v-container>
       <v-spacer />
     </v-app-bar>
     <v-main>
-      <v-container>
+      <v-container fluid class="pa-0">
         <nuxt />
       </v-container>
     </v-main>

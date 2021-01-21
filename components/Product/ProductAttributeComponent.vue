@@ -53,8 +53,8 @@ export default {
         )
         .then((res) => {
           this.$router.push({
-            path: `edit/${this.slug}`,
-            query: { data: res.data },
+            path: `edit/${this.res.data.sku}`,
+          //  query: { data: res.data },
           })
         })
         .catch((err) => {

@@ -22,7 +22,7 @@
     <v-app-bar fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <nuxt-link :to="{ name: 'index' }">
-        <v-img src="/logo.png" alt="artistic logo" width="80" />
+        <v-img src="/logo.png" alt="artistic logo" contain width="100" />
       </nuxt-link>
       <v-container fluid px-0>
         <v-row no-gutters>

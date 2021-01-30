@@ -39,7 +39,7 @@
         <li>the sku value will be the unique url of your product at urartistic.com/product/sku.</li>
     </ul></p>
           <v-text-field
-              v-model="slug"
+              v-model="sku"
             :rules="[(v) => !!v || 'unique sku name is required']"
             label="SKU"
             filled
@@ -57,7 +57,7 @@
       <PAC
         :attributes="{
           data: familyData,
-          sku: this.slug,
+          sku: this.sku,
           family: this.selectedFamily.id,
         }"
       />
@@ -77,7 +77,7 @@ export default {
       showConfig: false,
       types: ['simple', 'configurable', 'bundle'],
       selectedFamily: null,
-      slug: '',
+      sku: '',
       familyData: null,
     }
   },
@@ -91,11 +91,11 @@ export default {
           .$post('products', {
             type: 'simple',
             attribute_family_id: this.selectedFamily.id,
-            sku: this.slug,
+            sku: this.sku,
           })
           .then((res) => {
             this.$router.push({
-              path: `edit/${this.slug}`,
+              path: `edit/${this.sku}`,
               // query: { data: res.data },
             })
           })

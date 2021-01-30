@@ -19,7 +19,7 @@
                 ? userData.coverimg
                 : require('@/assets/img/default-dp.png')
             "
-            :aspect-ratio="16 / 5"
+            :aspect-ratio="$vuetify.breakpoint.mdAndUp ? 16 / 2 : 16 / 9"
           />
           <v-row no-gutters class="mt-n10"
             ><v-card
@@ -28,8 +28,8 @@
                   ? userData.avatarimg
                   : require('@/assets/img/default-dp.png')
               "
-              width="200"
-              height="200"
+              width="150"
+              height="150"
               color="accent"
               class="ml-6"
             ></v-card>
@@ -122,7 +122,7 @@
                 rules="required|max:40"
               >
                 <v-text-field
-                  v-model="userData.slug"
+                  v-model="userData.url"
                   label="Profile Url"
                   placeholder="profile url on artistic"
                   :color="!editMode ? 'primary' : 'success'"
@@ -187,9 +187,9 @@ export default {
   data() {
     return {
       editMode: false,
-      formData: {},
+      formData: new Object(),
 
-      userData: {},
+      userData: Object,
       uploadImage: false,
       imageType: '',
     }

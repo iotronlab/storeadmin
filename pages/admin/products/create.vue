@@ -75,7 +75,7 @@ export default {
       valid: true,
       selectedType: null,
       showConfig: false,
-      types: ['simple', 'configurable', 'bundle'],
+      types: ['simple'],
       selectedFamily: null,
       sku: '',
       familyData: null,

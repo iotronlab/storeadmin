@@ -116,7 +116,6 @@ export default {
           this.progress = 0
 
           this.$emit('upload:success', res)
-          
         })
         .catch((err) => {
           console.log(err),

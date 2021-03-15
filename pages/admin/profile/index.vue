@@ -32,13 +32,16 @@
               height="150"
               color="accent"
               class="ml-6"
-            ></v-card>
-            <v-btn small class="ma-1" @click="uploadImageData('profile')"
-              ><v-icon left>mdi-image-edit-outline</v-icon>display
-              picture</v-btn
-            >
-            <v-btn small class="ma-1" @click="uploadImageData('cover')"
-              ><v-icon left>mdi-image-edit-outline</v-icon>cover picture</v-btn
+            ></v-card
+            ><v-col>
+              <v-btn small class="mb-1" @click="uploadImageData('profile')"
+                ><v-icon left>mdi-image-edit-outline</v-icon>display
+                picture</v-btn
+              >
+              <v-btn small class="mb-1" @click="uploadImageData('cover')"
+                ><v-icon left>mdi-image-edit-outline</v-icon>cover
+                picture</v-btn
+              ></v-col
             ></v-row
           ><ImageUpload
             :openModal="uploadImage"
@@ -159,7 +162,7 @@
                 rules="required|min:60|max:240"
               >
                 <v-textarea
-                  v-model="userData.description"
+                  v-model="userData.bio"
                   label="Profile Bio"
                   placeholder="Bio displayed on your profile"
                   :color="!editMode ? 'primary' : 'success'"
@@ -174,6 +177,7 @@
             </ValidationObserver>
           </v-container>
         </v-card>
+        <v-btn block @click="logoutUser">Logout</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -272,6 +276,11 @@ export default {
     },
     cancelUpload() {
       this.uploadImage = false
+    },
+    async logoutUser() {
+      await this.$auth.logout().then(() => {
+        this.$router.push('/')
+      })
     },
   },
 }

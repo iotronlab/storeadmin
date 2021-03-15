@@ -1,13 +1,24 @@
 import Vue from 'vue'
 import { extend, ValidationProvider } from 'vee-validate'
 import { setInteractionMode } from 'vee-validate'
-import { required, max, digits, email, min } from 'vee-validate/dist/rules'
+import {
+  required,
+  max,
+  digits,
+  email,
+  min,
+  integer,
+} from 'vee-validate/dist/rules'
 
 setInteractionMode('eager')
 
 extend('required', {
   ...required,
   message: '{_field_} can not be empty',
+})
+extend('integer', {
+  ...integer,
+  message: '{_field_} should be an integer',
 })
 extend('email', {
   ...email,

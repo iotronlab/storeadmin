@@ -1,12 +1,12 @@
 <template>
   <v-container fluid>
-    <ValidationObserver ref="observer" v-slot="{}">
+    <ValidationObserver ref="observer">
       <form action="#" @submit.prevent="store">
         <v-app-bar fixed dense>
           <v-btn @click="reset" text width="30%">
             <v-icon left>mdi-close</v-icon>Cancel
           </v-btn>
-          <v-btn class="" color="secondary" type="submit" width="70%">
+          <v-btn color="secondary" type="submit" width="70%">
             {{ edit ? 'Update Address' : 'Add Address' }}</v-btn
           >
         </v-app-bar>
@@ -131,6 +131,7 @@
             dense
             :error-messages="errors"
             v-model="address.country_id"
+            @change="updateCountry"
           ></v-select
         ></ValidationProvider>
 
@@ -192,6 +193,7 @@ export default {
         postal_code: '',
         state: '',
         country_id: '',
+        country_code: '',
         default: false,
       },
     }
@@ -292,6 +294,14 @@ export default {
       this.$refs.observer.reset()
       this.address = this.defaultAddress
       this.$emit('reset:address')
+    },
+    updateCountry() {
+      let country = this.countries.find(
+        (el) => el.id == this.address.country_id
+      )
+
+      console.log(country)
+      this.address.country_code = country.iso_code_2
     },
   },
 }

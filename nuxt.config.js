@@ -86,20 +86,17 @@ export default {
       login: '/',
       callback: '/',
     },
-
-    refresh_token: {
-      prefix: '_refresh_token.',
+    localStorage: {
+      prefix: 'artifycp.',
     },
-    token: {
-      prefix: '_token.',
-    },
-
     strategies: {
       local: {
         token: {
           property: 'accessToken',
           required: true,
           type: 'Bearer',
+          prefix: '_vendor.',
+          maxAge: false,
         },
         user: {
           property: 'data',
@@ -121,9 +118,6 @@ export default {
         },
 
         watchLoggedIn: true,
-        localStorage: {
-          prefix: 'auth.',
-        },
       },
     },
   },

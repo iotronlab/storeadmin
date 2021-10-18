@@ -192,7 +192,7 @@ export default {
         city: '',
         postal_code: '',
         state: '',
-        country_id: '',
+
         country_code: '',
         default: false,
       },

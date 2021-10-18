@@ -28,7 +28,7 @@
             </template>
             <v-card>
               <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
+                <span class="text-body-1">{{ formTitle }}</span>
               </v-card-title>
 
               <v-card-text>
@@ -51,7 +51,14 @@
                 <v-btn color="blue darken-1" text @click="close">
                   Cancel
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                <v-btn
+                  color="blue darken-1"
+                  :disabled="!hasAddress"
+                  text
+                  @click="save"
+                >
+                  Save
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -131,6 +138,13 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'New Stock' : 'Edit Stock'
     },
+    hasAddress() {
+      if (this.editedItem.address.id) {
+        return true
+      } else {
+        return false
+      }
+    },
   },
 
   watch: {
@@ -142,7 +156,7 @@ export default {
     },
   },
 
-  created() {},
+  // created() {},
 
   methods: {
     editItem(item) {
